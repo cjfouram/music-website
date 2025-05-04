@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <title>My Music Website</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: Arial, sans-serif;
+      background: #fff;
+      color: #333;
+      line-height: 1.6;
+      text-align: center;
+    }
+    header {
+      position: relative;
+      background: #f5f5f5;
+      padding: 1em;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      overflow: hidden;
+    }
+    #starCanvas {
+      position: absolute; top: 0; left: 0;
+      width: 100%; height: 100%;
+      pointer-events: none; z-index: 0;
+    }
+    .header-inner {
+      position: relative; z-index: 1;
+      display: flex; align-items: center;
+    }
+    header img.logo { height: 50px; }
+    .links { position: relative; z-index: 1; }
+    .links ul {
+      list-style: none;
+      display: flex;
+      justify-content: center;
+      gap: 1em;
+      padding: 0; margin: 0;
+    }
+    .links ul li a {
+      text-decoration: none; color: #333; font-weight: bold;
+    }
+    main {
+      padding: 1em; max-width: 700px; margin: 0 auto;
+    }
+    main section { margin-bottom: 2em; }
+    main h2 {
+      font-size: 1.5em; margin-bottom: 0.5em; text-transform: capitalize;
+    }
+    main h3 {
+      font-size: 1.2em; margin: 1em 0 0.5em;
+      font-weight: normal; text-transform: lowercase; color: #444;
+    }
+    main .attribution {
+      font-size: 0.75em;
+      color: #444;          /* match title color */
+      margin-top: -0.5em;
+      margin-bottom: 1em;
+      text-transform: none;
+    }
+    audio { width: 100%; margin-bottom: 1em; }
+    .more-links {
+      text-align: center;
+    }
+    .more-links ul {
+      display: inline-block; margin: 0; padding: 0;
+    }
+    .more-links ul li {
+      display: inline-block; margin: 0 1em;
+    }
+    footer {
+      background: #f5f5f5; padding: 1em; font-size: 0.9em;
+    }
+    @media (max-width: 600px) {
+      header { flex-direction: column; }
+      .links ul { flex-direction: column; margin-top: 0.5em; }
+      .header-inner { flex-direction: column; gap: 0.5em; }
+      .more-links ul { display: block; }
+      .more-links ul li { margin: 0.5em 0; display: block; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <canvas id="starCanvas"></canvas>
+    <div class="header-inner">
+      <img src="assets/images/U4EA LOGO 2 Black.png" alt="Outline Logo" class="logo">
+    </div>
+    <div class="links">
+      <ul>
+        <li><a href="https://cradlerecords.bandcamp.com/dashboard" target="_blank">Bandcamp</a></li>
+        <li><a href="https://www.instagram.com/cjfouram/" target="_blank">Instagram</a></li>
+        <li><a href="https://open.spotify.com/artist/3f51vOx2uFOmUS5C6tCsXQ" target="_blank">Spotify</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <main>
+    <section>
+      <h2>Music</h2>
+
+      <h3>from the sea to the land beyond.wav</h3>
+      <div class="attribution">
+        sample from “From the Sea To the Land Beyond” by Sea Power
+      </div>
+      <audio controls autoplay>
+        <source src="assets/audio/from the sea to the land beyond NEW.wav" type="audio/wav">
+      </audio>
+
+      <h3>data pockets.wav</h3>
+      <audio controls>
+        <source src="assets/audio/JDXI DX7.wav" type="audio/wav">
+      </audio>
+
+      <h3>aristeia.wav</h3>
+      <audio controls>
+        <source src="assets/audio/Aristeia (freestyle Sep 12).wav" type="audio/wav">
+      </audio>
+    </section>
+
+    <section class="more-links">
+      <h2>More Links</h2>
+      <ul>
+        <li><a href="https://ffm.to/pushplay" target="_blank">Push, Play – Mixtape (2024)</a></li>
+        <li><a href="https://open.spotify.com/playlist/6lpVZpow88iVsQNuOhMIhA" target="_blank">Produced by CJ – Spotify Playlist</a></li>
+        <li><a href="https://ffm.to/msfd" target="_blank">Machine Shop Flash Drive – EP (2017-2023)</a></li>
+      </ul>
+    </section>
+  </main>
+
+  <footer>CJ Harper</footer>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // STAR CANVAS
+      const canvas = document.getElementById('starCanvas');
+      const ctx = canvas.getContext('2d');
+      const header = document.querySelector('header');
+      function resize() {
+        canvas.width = header.clientWidth;
+        canvas.height = header.clientHeight;
+      }
+      window.addEventListener('resize', resize);
+      resize();
+
+      const palette = [
+        'purple','orange','blue','green',
+        '#ffbf00','red','#add8e6','lightgrey','grey','darkgrey'
+      ];
+
+      const waves = [];
+      for (let i = 0; i < 10; i++) {
+        waves.push({
+          amp: 10 + Math.random() * 20,
+          freq: 1 + Math.random() * 3,
+          phase: Math.random() * Math.PI * 2,
+          speed: 0.5 + Math.random(),
+          color: palette[i]
+        });
+      }
+
+      function drawStars(t) {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.font = '16px Courier New';
+        waves.forEach(w => {
+          ctx.fillStyle = w.color;
+          for (let x = 0; x < canvas.width; x += 16) {
+            const y = canvas.height / 2 +
+              w.amp * Math.sin(2 * Math.PI * (w.freq * x / canvas.width)
+              + w.phase + t * w.speed);
+            ctx.fillText('*', x, y);
+          }
+        });
+        requestAnimationFrame(ts => drawStars(ts / 1000));
+      }
+      requestAnimationFrame(ts => drawStars(ts / 1000));
+
+      // Pause others on play + chain next
+      const audios = Array.from(document.querySelectorAll('audio'));
+      audios.forEach((a, i) => {
+        a.addEventListener('play', () => {
+          audios.forEach(o => { if (o !== a) o.pause(); });
+        });
+        a.addEventListener('ended', () => {
+          if (i + 1 < audios.length) audios[i + 1].play().catch(() => {});
+        });
+      });
+      audios[0].play().catch(() => {});
+    });
+  </script>
+
+</body>
+</html>
