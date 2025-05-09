@@ -57,10 +57,10 @@
     }
     main .attribution {
       font-size: 0.75em;
-      color: #444;          /* match title color */
+      color: #666;
+      font-style: italic;
       margin-top: -0.5em;
       margin-bottom: 1em;
-      text-transform: none;
     }
     audio { width: 100%; margin-bottom: 1em; }
     .more-links {
@@ -72,13 +72,11 @@
     .more-links ul li {
       display: inline-block; margin: 0 1em;
     }
-    footer {
-      background: #f5f5f5; padding: 1em; font-size: 0.9em;
-    }
     @media (max-width: 600px) {
-      header { flex-direction: column; }
-      .links ul { flex-direction: column; margin-top: 0.5em; }
-      .header-inner { flex-direction: column; gap: 0.5em; }
+      header {
+        flex-direction: column;
+      }
+      .links ul { flex-direction: column; margin-top: 0.5em; gap: 0.5em; }
       .more-links ul { display: block; }
       .more-links ul li { margin: 0.5em 0; display: block; }
     }
@@ -91,13 +89,13 @@
     <div class="header-inner">
       <img src="assets/images/U4EA LOGO 2 Black.png" alt="Outline Logo" class="logo">
     </div>
-    <div class="links">
+    <nav class="links">
       <ul>
-        <li><a href="https://cradlerecords.bandcamp.com/dashboard" target="_blank">Bandcamp</a></li>
+        <li><a href="https://cradlerecords.bandcamp.com/" target="_blank">Bandcamp</a></li>
         <li><a href="https://www.instagram.com/cjfouram/" target="_blank">Instagram</a></li>
         <li><a href="https://open.spotify.com/artist/3f51vOx2uFOmUS5C6tCsXQ" target="_blank">Spotify</a></li>
       </ul>
-    </div>
+    </nav>
   </header>
 
   <main>
@@ -108,7 +106,7 @@
       <div class="attribution">
         sample from “From the Sea To the Land Beyond” by Sea Power
       </div>
-      <audio controls autoplay>
+      <audio controls>
         <source src="assets/audio/from the sea to the land beyond NEW.wav" type="audio/wav">
       </audio>
 
@@ -126,18 +124,15 @@
     <section class="more-links">
       <h2>More Links</h2>
       <ul>
-        <li><a href="https://ffm.to/pushplay" target="_blank">Push, Play – Mixtape (2024)</a></li>
-        <li><a href="https://open.spotify.com/playlist/6lpVZpow88iVsQNuOhMIhA" target="_blank">Produced by CJ – Spotify Playlist</a></li>
-        <li><a href="https://ffm.to/msfd" target="_blank">Machine Shop Flash Drive – EP (2017-2023)</a></li>
+        <li><a href="https://ffm.to/pushplay" target="_blank">"Push, Play" – Mixtape (2024)</a></li>
+        <li><a href="https://open.spotify.com/playlist/6lpVZpow88iVsQNuOhMIhA" target="_blank">"Produced by CJ" – Spotify Playlist</a></li>
+        <li><a href="https://ffm.to/msfd" target="_blank">"Machine Shop Flash Drive" – EP (2017-2023)</a></li>
       </ul>
     </section>
   </main>
 
-  <footer>CJ Harper</footer>
-
   <script>
     document.addEventListener('DOMContentLoaded', () => {
-      // STAR CANVAS
       const canvas = document.getElementById('starCanvas');
       const ctx = canvas.getContext('2d');
       const header = document.querySelector('header');
@@ -152,7 +147,6 @@
         'purple','orange','blue','green',
         '#ffbf00','red','#add8e6','lightgrey','grey','darkgrey'
       ];
-
       const waves = [];
       for (let i = 0; i < 10; i++) {
         waves.push({
@@ -180,19 +174,13 @@
       }
       requestAnimationFrame(ts => drawStars(ts / 1000));
 
-      // Pause others on play + chain next
       const audios = Array.from(document.querySelectorAll('audio'));
-      audios.forEach((a, i) => {
+      audios.forEach(a => {
         a.addEventListener('play', () => {
           audios.forEach(o => { if (o !== a) o.pause(); });
         });
-        a.addEventListener('ended', () => {
-          if (i + 1 < audios.length) audios[i + 1].play().catch(() => {});
-        });
       });
-      audios[0].play().catch(() => {});
     });
   </script>
-
 </body>
 </html>
